@@ -22,6 +22,11 @@
   iOS Safari suspends the iframe's audio when the tab is hidden or the screen locks; Android
   Chrome keeps playing and gets lock-screen controls via Media Session.
 
+  Installed as an app: manifest.webmanifest plus icon-180/192/512.png have to sit next to this page
+  on the host, otherwise Add to Home Screen only leaves a bookmark. There is no service worker on
+  purpose - the audio is streamed at play time, so caching the shell would promise offline it cannot
+  deliver, and a stale cache would hide updates to this file.
+
   Sources: "artist song", a YouTube playlist URL or PL/RD id, a single video URL,
            or listenbrainz:<username>
 -->
@@ -29,12 +34,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="music core">
 <title>music core</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; background: #000; color: #b8a6cc; font: 15px/1.35 ui-monospace, Menlo, Consolas, monospace; }
   body { padding-bottom: 108px; }
-  header { padding: 12px 14px 6px; border-bottom: 2px solid #a855f7; }
+  header { padding: calc(12px + env(safe-area-inset-top)) 14px 6px; border-bottom: 2px solid #a855f7; }
   h1 { margin: 0 0 8px; font-size: 13px; letter-spacing: 2px; color: #c084fc; }
   .load { display: flex; gap: 8px; }
   .load input { flex: 1; min-width: 0; background: #000; color: #e9d5ff; border: 1px solid #6d28d9;
